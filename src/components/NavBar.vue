@@ -43,6 +43,7 @@ nav {
 
     &.container {
       max-width: 992px;
+      box-sizing: border-box;
       margin-left: auto;
       margin-right: auto;
       display: flex;
