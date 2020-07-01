@@ -69,6 +69,7 @@ export default {
   }
 
   .tweet-content {
+    width: inherit;
     flex-shrink: 1;
     display: flex;
     flex-direction: column;
