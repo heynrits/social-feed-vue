@@ -3,9 +3,11 @@
     <img id="avatar" :src="avatar" alt="User Avatar" />
     <div id="main">
       <textarea
+        v-model="tweetText"
         name="compose-tweet-body"
         id="compose-tweet-body"
         rows="2"
+        maxlength="280"
         placeholder="What's happening"
       ></textarea>
       <div id="actions">
@@ -37,7 +39,12 @@
             class="ic-compose-tweet-advanced"
           />
         </button>
-        <button type="button">Tweet</button>
+        <div class="left">
+          <span class="character-count">{{ tweetText.length }}/280</span>
+          <button id="btn-submit" type="button">
+            Tweet
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -50,6 +57,7 @@ export default {
   data() {
     return {
       avatar: composerAvatar,
+      tweetText: '',
     };
   },
 };
@@ -99,7 +107,7 @@ export default {
         cursor: pointer;
       }
 
-      button:not(:last-of-type) {
+      button {
         /* class="border-0 rounded-circle btn-compose-tweet-advanced" */
         background: transparent;
         border: none;
@@ -111,17 +119,27 @@ export default {
         }
       }
 
-      button:last-of-type {
+      #btn-submit {
         /* class="btn btn-primary py-2 px-3 rounded-pill font-weight-bold send-tweet-btn ml-auto" */
         background: #1da1f2;
         border: none;
         border-radius: 25px;
 
         padding: 8px 18px;
-        margin-left: auto;
 
         font-weight: bold;
         color: #fff;
+      }
+
+      .character-count {
+        color: #aaa;
+        margin-right: 20px;
+      }
+
+      .left {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
       }
     }
   }
