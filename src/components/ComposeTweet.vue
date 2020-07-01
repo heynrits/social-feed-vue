@@ -125,6 +125,10 @@ export default {
 
       margin-top: 16px;
 
+      @media screen and (max-width: 992px) {
+        align-items: flex-end;
+      }
+
       button {
         cursor: pointer;
       }
@@ -161,12 +165,22 @@ export default {
       .character-count {
         color: #aaa;
         margin-right: 20px;
+
+        @media screen and (max-width: 992px) {
+          margin-right: 0;
+          margin-bottom: 10px;
+        }
       }
 
       .left {
         display: flex;
         align-items: center;
         margin-left: auto;
+
+        @media screen and (max-width: 992px) {
+          flex-direction: column;
+          align-items: flex-end;
+        }
       }
     }
   }
