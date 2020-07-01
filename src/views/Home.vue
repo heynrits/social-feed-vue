@@ -2,7 +2,7 @@
   <div class="home">
     <NavBar />
     <main class="container">
-      <ComposeTweet />
+      <ComposeTweet :saveTweet="this.saveTweet" />
       <div>
         <div v-for="tweet in this.tweets" :key="tweet.id.toString()">
           <Tweet v-bind:tweet="{ user, ...tweet }" />
@@ -35,6 +35,11 @@ export default {
       },
       tweets: data.tweets,
     };
+  },
+  methods: {
+    saveTweet(tweet) {
+      this.tweets = [tweet, ...this.tweets];
+    },
   },
 };
 </script>
