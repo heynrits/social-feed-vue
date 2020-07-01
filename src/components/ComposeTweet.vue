@@ -41,7 +41,12 @@
         </button>
         <div class="left">
           <span class="character-count">{{ tweetText.length }}/280</span>
-          <button id="btn-submit" type="button">
+          <button
+            :disabled="tweetText.length === 0"
+            id="btn-submit"
+            :class="tweetText.length === 0 ? 'disabled' : ''"
+            type="button"
+          >
             Tweet
           </button>
         </div>
@@ -129,6 +134,11 @@ export default {
 
         font-weight: bold;
         color: #fff;
+
+        &.disabled {
+          opacity: 0.5;
+          cursor: default;
+        }
       }
 
       .character-count {
