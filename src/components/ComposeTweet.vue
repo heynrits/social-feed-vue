@@ -45,6 +45,7 @@
             :disabled="tweetText.length === 0"
             id="btn-submit"
             :class="tweetText.length === 0 ? 'disabled' : ''"
+            v-on:click="submitTweet"
             type="button"
           >
             Tweet
@@ -59,11 +60,27 @@
 import composerAvatar from '@/assets/img/default_profile.png';
 
 export default {
+  props: {
+    saveTweet: Function,
+  },
   data() {
     return {
       avatar: composerAvatar,
       tweetText: '',
     };
+  },
+  methods: {
+    submitTweet() {
+      const now = Date.now();
+      const tweet = {
+        created_at: new Date(now).toISOString(),
+        id: now.toString(),
+        text: this.tweetText,
+      };
+
+      this.saveTweet(tweet);
+      this.tweetText = '';
+    },
   },
 };
 </script>
