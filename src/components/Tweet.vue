@@ -35,18 +35,18 @@
         <span>{{ tweet.text }}</span>
       </div>
       <div class="tweet-actions">
-        <span>
-          <a class="action" href="#">
+        <span class="action">
+          <a href="#">
             <img src="../assets/img/ic-chat.svg" alt="Reply" />
           </a>
         </span>
-        <span>
-          <a class="action" href="#">
+        <span class="action">
+          <a href="#">
             <img src="../assets/img/ic-arrow-left-right.svg" alt="Retweet" />
           </a>
         </span>
-        <span>
-          <a class="action" href="#">
+        <span class="action">
+          <a href="#">
             <img src="../assets/img/ic-heart.svg" alt="Like" />
           </a>
         </span>
@@ -219,7 +219,7 @@ export default {
       align-items: center;
       justify-content: space-between;
 
-      a.action {
+      span.action {
         flex: 1;
         text-decoration: none;
         color: #aaa;
