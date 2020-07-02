@@ -13,11 +13,25 @@
         </span>
         <span class="text-muted dot-separator">&middot;</span>
         <span class="text-muted time">{{ this.getFormattedDate() }}</span>
-        <span class="text-muted chevron"
-          ><img src="../assets/img/ic-chevron-down.svg" alt="Options"
-        /></span>
+        <span class="text-muted chevron" v-on:click="toggleMenu">
+          <img
+            class="ic-chevron"
+            src="../assets/img/ic-chevron-down.svg"
+            alt="Options"
+          />
+          <ul
+            :class="
+              this.showContextualMenu
+                ? 'contextual-menu show'
+                : 'contextual-menu'
+            "
+          >
+            <li><span v-on:click="() => onEdit(tweet)">Edit</span></li>
+            <li><span v-on:click="() => onDelete(tweet.id)">Delete</span></li>
+          </ul>
+        </span>
       </div>
-      <div class="tweet-body">
+      <div :class="tweet.recentlyUpdated ? 'tweet-body updated' : 'tweet-body'">
         <span>{{ tweet.text }}</span>
       </div>
       <div class="tweet-actions">
@@ -39,6 +53,17 @@
 export default {
   props: {
     tweet: Object,
+    onEdit: Function,
+    onDelete: Function,
+  },
+  data() {
+    return {
+      showContextualMenu: false,
+      editTweet: {
+        editing: false,
+        updatedTweet: '',
+      },
+    };
   },
   methods: {
     getFormattedDate() {
@@ -48,6 +73,9 @@ export default {
         .slice(1) // ['Jun', '27', '2020']
         .join(', ') // 'Jun, 27, 2020'
         .replace(',', ''); // 'Jun 27, 2020'
+    },
+    toggleMenu() {
+      this.showContextualMenu = !this.showContextualMenu;
     },
   },
 };
@@ -120,14 +148,64 @@ export default {
       }
 
       .chevron {
+        cursor: pointer;
         flex-shrink: 0;
         margin-left: auto;
+        position: relative;
+
+        .contextual-menu {
+          background: #fff;
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+          border-radius: 4px;
+          margin: 0;
+          padding: 0;
+          display: none;
+          height: 0;
+          list-style: none;
+          &.show {
+            height: initial;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            right: 0;
+          }
+
+          li span {
+            cursor: pointer;
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #212121;
+
+            &:hover {
+              transition: background-color 0.5s ease;
+              background-color: #eee;
+            }
+          }
+        }
       }
     }
 
     .tweet-body {
       margin-top: 8px;
       margin-bottom: 8px;
+
+      @keyframes updatedTweet {
+        0% {
+          border-radius: 4px;
+          background-color: #bccbff;
+        }
+        100% {
+          background-color: initial;
+        }
+      }
+
+      &.updated {
+        animation-name: updatedTweet;
+        animation-duration: 3s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: 1;
+      }
     }
 
     .tweet-actions {

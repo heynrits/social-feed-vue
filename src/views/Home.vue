@@ -1,12 +1,32 @@
 <template>
   <div class="home">
+    <!-- Modals -->
+    <div v-if="editTweet.editing">
+      <EditTweetModal
+        :tweet="editTweet.tweet"
+        :onCancelEditClick="onCancelEditClick"
+        :onSaveEditClick="onSaveEditClick"
+      />
+    </div>
+    <div v-if="deleteTweet.deleting">
+      <DeleteTweetModal
+        :tweetId="this.deleteTweet.id"
+        :onCancelDeleteClick="onCancelDeleteClick"
+        :onConfirmDeleteClick="onConfirmDeleteClick"
+      />
+    </div>
+
     <NavBar />
     <main class="container">
       <ComposeTweet :saveTweet="this.saveTweet" />
-      <div>
-        <div v-for="tweet in this.tweets" :key="tweet.id.toString()">
-          <Tweet v-bind:tweet="{ user, ...tweet }" />
-        </div>
+      <div id="main-feed">
+        <Tweet
+          v-for="tweet in this.tweets"
+          :key="tweet.id.toString()"
+          v-bind:tweet="{ user, ...tweet }"
+          :onEdit="onEditClick"
+          :onDelete="onDeleteClick"
+        />
       </div>
     </main>
   </div>
@@ -16,6 +36,8 @@
 // @ is an alias to /src
 import NavBar from '@/components/NavBar.vue';
 import ComposeTweet from '@/components/ComposeTweet.vue';
+import EditTweetModal from '@/components/EditTweetModal.vue';
+import DeleteTweetModal from '@/components/DeleteTweetModal.vue';
 import Tweet from '@/components/Tweet.vue';
 
 import data from '../data/tweets.json';
@@ -26,6 +48,8 @@ export default {
     NavBar,
     ComposeTweet,
     Tweet,
+    EditTweetModal,
+    DeleteTweetModal,
   },
   data() {
     return {
@@ -34,11 +58,89 @@ export default {
         username: 'jdoe',
       },
       tweets: data.tweets,
+      editTweet: {
+        editing: false,
+        tweet: {},
+        updatedTweet: '',
+        recentlyUpdatedId: '',
+      },
+      deleteTweet: {
+        deleting: false,
+        id: '',
+      },
     };
   },
+
+  updated() {
+    // Remove recently updated status
+    // to allow succeeding updates
+    // to have the updated animation indicators as well
+    if (this.recentlyUpdatedId) {
+      setTimeout(() => {
+        this.tweets = this.tweets.map((t) => {
+          if (t.id === this.recentlyUpdatedId) {
+            this.recentlyUpdatedId = '';
+            return { ...t, recentlyUpdated: undefined };
+          }
+          return t;
+        });
+      }, 3000);
+    }
+  },
+
   methods: {
     saveTweet(tweet) {
       this.tweets = [tweet, ...this.tweets];
+    },
+
+    onEditClick(tweet) {
+      this.editTweet = {
+        editing: true,
+        tweet,
+        updatedTweet: tweet.text,
+      };
+    },
+
+    onCancelEditClick() {
+      this.editTweet = {
+        editing: false,
+        tweet: {},
+        updatedTweet: '',
+      };
+    },
+
+    onSaveEditClick(updatedTweet) {
+      this.tweets = this.tweets.map((t) => {
+        if (t.id === updatedTweet.id) {
+          this.recentlyUpdatedId = t.id;
+          return { ...updatedTweet, recentlyUpdated: true };
+        }
+
+        return t;
+      });
+
+      this.onCancelEditClick();
+    },
+
+    onDeleteClick(tweetId) {
+      this.deleteTweet = {
+        deleting: true,
+        id: tweetId,
+      };
+    },
+
+    onCancelDeleteClick() {
+      this.deleteTweet = {
+        deleting: false,
+        id: '',
+      };
+    },
+
+    onConfirmDeleteClick(tweetId) {
+      console.log('got there', tweetId);
+      this.tweets = this.tweets.filter((t) => t.id !== tweetId);
+
+      this.onCancelDeleteClick();
     },
   },
 };
