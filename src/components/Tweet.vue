@@ -27,7 +27,7 @@
             "
           >
             <li><span v-on:click="() => onEdit(tweet)">Edit</span></li>
-            <li><span>Delete</span></li>
+            <li><span v-on:click="() => onDelete(tweet.id)">Delete</span></li>
           </ul>
         </span>
       </div>
@@ -54,6 +54,7 @@ export default {
   props: {
     tweet: Object,
     onEdit: Function,
+    onDelete: Function,
   },
   data() {
     return {

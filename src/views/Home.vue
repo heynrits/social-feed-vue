@@ -8,14 +8,25 @@
         :onSaveEditClick="onSaveEditClick"
       />
     </div>
+    <div v-if="deleteTweet.deleting">
+      <DeleteTweetModal
+        :tweetId="this.deleteTweet.id"
+        :onCancelDeleteClick="onCancelDeleteClick"
+        :onConfirmDeleteClick="onConfirmDeleteClick"
+      />
+    </div>
 
     <NavBar />
     <main class="container">
       <ComposeTweet :saveTweet="this.saveTweet" />
-      <div>
-        <div v-for="tweet in this.tweets" :key="tweet.id.toString()">
-          <Tweet v-bind:tweet="{ user, ...tweet }" :onEdit="onEditClick" />
-        </div>
+      <div id="main-feed">
+        <Tweet
+          v-for="tweet in this.tweets"
+          :key="tweet.id.toString()"
+          v-bind:tweet="{ user, ...tweet }"
+          :onEdit="onEditClick"
+          :onDelete="onDeleteClick"
+        />
       </div>
     </main>
   </div>
@@ -26,6 +37,7 @@
 import NavBar from '@/components/NavBar.vue';
 import ComposeTweet from '@/components/ComposeTweet.vue';
 import EditTweetModal from '@/components/EditTweetModal.vue';
+import DeleteTweetModal from '@/components/DeleteTweetModal.vue';
 import Tweet from '@/components/Tweet.vue';
 
 import data from '../data/tweets.json';
@@ -37,6 +49,7 @@ export default {
     ComposeTweet,
     Tweet,
     EditTweetModal,
+    DeleteTweetModal,
   },
   data() {
     return {
@@ -50,6 +63,10 @@ export default {
         tweet: {},
         updatedTweet: '',
         recentlyUpdatedId: '',
+      },
+      deleteTweet: {
+        deleting: false,
+        id: '',
       },
     };
   },
@@ -103,6 +120,27 @@ export default {
       });
 
       this.onCancelEditClick();
+    },
+
+    onDeleteClick(tweetId) {
+      this.deleteTweet = {
+        deleting: true,
+        id: tweetId,
+      };
+    },
+
+    onCancelDeleteClick() {
+      this.deleteTweet = {
+        deleting: false,
+        id: '',
+      };
+    },
+
+    onConfirmDeleteClick(tweetId) {
+      console.log('got there', tweetId);
+      this.tweets = this.tweets.filter((t) => t.id !== tweetId);
+
+      this.onCancelDeleteClick();
     },
   },
 };
