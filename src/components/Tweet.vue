@@ -26,12 +26,12 @@
                 : 'contextual-menu'
             "
           >
-            <li><span>Edit</span></li>
+            <li><span v-on:click="() => onEdit(tweet)">Edit</span></li>
             <li><span>Delete</span></li>
           </ul>
         </span>
       </div>
-      <div class="tweet-body">
+      <div :class="tweet.recentlyUpdated ? 'tweet-body updated' : 'tweet-body'">
         <span>{{ tweet.text }}</span>
       </div>
       <div class="tweet-actions">
@@ -53,11 +53,15 @@
 export default {
   props: {
     tweet: Object,
-    dismissAction: Boolean,
+    onEdit: Function,
   },
   data() {
     return {
       showContextualMenu: false,
+      editTweet: {
+        editing: false,
+        updatedTweet: '',
+      },
     };
   },
   methods: {
@@ -143,6 +147,7 @@ export default {
       }
 
       .chevron {
+        cursor: pointer;
         flex-shrink: 0;
         margin-left: auto;
         position: relative;
@@ -183,6 +188,23 @@ export default {
     .tweet-body {
       margin-top: 8px;
       margin-bottom: 8px;
+
+      @keyframes updatedTweet {
+        0% {
+          border-radius: 4px;
+          background-color: #bccbff;
+        }
+        100% {
+          background-color: initial;
+        }
+      }
+
+      &.updated {
+        animation-name: updatedTweet;
+        animation-duration: 3s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: 1;
+      }
     }
 
     .tweet-actions {
