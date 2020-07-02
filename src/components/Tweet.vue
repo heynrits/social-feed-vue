@@ -35,15 +35,21 @@
         <span>{{ tweet.text }}</span>
       </div>
       <div class="tweet-actions">
-        <a class="action" href="#"
-          ><img src="../assets/img/ic-chat.svg" alt="Reply" />
-        </a>
-        <a class="action" href="#"
-          ><img src="../assets/img/ic-arrow-left-right.svg" alt="Retweet"
-        /></a>
-        <a class="action" href="#"
-          ><img src="../assets/img/ic-heart.svg" alt="Like"
-        /></a>
+        <span>
+          <a class="action" href="#">
+            <img src="../assets/img/ic-chat.svg" alt="Reply" />
+          </a>
+        </span>
+        <span>
+          <a class="action" href="#">
+            <img src="../assets/img/ic-arrow-left-right.svg" alt="Retweet" />
+          </a>
+        </span>
+        <span>
+          <a class="action" href="#">
+            <img src="../assets/img/ic-heart.svg" alt="Like" />
+          </a>
+        </span>
       </div>
     </div>
   </div>
