@@ -1,5 +1,5 @@
 <template>
-  <div class="tweet d-flex flex-row align-items-start">
+  <div class="tweet">
     <img
       class="tweet-avatar"
       src="../assets/img/default_profile.png"

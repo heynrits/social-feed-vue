@@ -1,20 +1,18 @@
 <template>
   <div class="home">
     <!-- Modals -->
-    <div v-if="editTweet.editing">
-      <EditTweetModal
-        :tweet="editTweet.tweet"
-        :onCancelEditClick="onCancelEditClick"
-        :onSaveEditClick="onSaveEditClick"
-      />
-    </div>
-    <div v-if="deleteTweet.deleting">
-      <DeleteTweetModal
-        :tweetId="this.deleteTweet.id"
-        :onCancelDeleteClick="onCancelDeleteClick"
-        :onConfirmDeleteClick="onConfirmDeleteClick"
-      />
-    </div>
+    <EditTweetModal
+      v-if="editTweet.editing"
+      :tweet="editTweet.tweet"
+      :onCancelEditClick="onCancelEditClick"
+      :onSaveEditClick="onSaveEditClick"
+    />
+    <DeleteTweetModal
+      v-if="deleteTweet.deleting"
+      :tweetId="this.deleteTweet.id"
+      :onCancelDeleteClick="onCancelDeleteClick"
+      :onConfirmDeleteClick="onConfirmDeleteClick"
+    />
 
     <NavBar />
     <main class="container">
@@ -137,7 +135,6 @@ export default {
     },
 
     onConfirmDeleteClick(tweetId) {
-      console.log('got there', tweetId);
       this.tweets = this.tweets.filter((t) => t.id !== tweetId);
 
       this.onCancelDeleteClick();

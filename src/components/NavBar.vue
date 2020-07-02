@@ -1,7 +1,9 @@
 <template>
   <nav>
     <ul class="container">
-      <li><img id="profile-icon" :src="icon" alt="" /></li>
+      <li>
+        <img id="profile-icon" src="../assets/img/default_profile.png" alt="" />
+      </li>
       <li id="title">
         <h1><router-link to="/">Home</router-link></h1>
       </li>
@@ -10,15 +12,8 @@
 </template>
 
 <script>
-import profileIcon from '@/assets/img/default_profile.png';
-
 export default {
   name: 'NavBar',
-  data() {
-    return {
-      icon: profileIcon,
-    };
-  },
 };
 </script>
 
