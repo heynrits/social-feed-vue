@@ -10,12 +10,30 @@
         maxlength="280"
         placeholder="What's happening"
       ></textarea>
+      <div class="attached-image" v-if="tweetImage.data">
+        <img
+          class="tweetImage"
+          :src="tweetImage.data"
+          :alt="tweetImage.altText"
+        />
+        <button class="btn-remove-img" v-on:click="removeImageAttachment">
+          &times;
+        </button>
+      </div>
       <div id="actions">
+        <input
+          type="file"
+          name="image-attachment"
+          id="image-attachment"
+          accept="image/png,image/jpeg,image/gif"
+          v-on:input="previewImage"
+        />
         <button>
           <img
             src="../assets/img/ic-image.svg"
             alt="Attach image"
             class="ic-compose-tweet-advanced"
+            v-on:click="attachImageBtnClick"
           />
         </button>
         <button>
@@ -42,9 +60,11 @@
         <div class="left">
           <span class="character-count">{{ tweetText.length }}/280</span>
           <button
-            :disabled="tweetText.length === 0"
+            :disabled="tweetText.length === 0 && tweetImage.data === ''"
             id="btn-submit"
-            :class="tweetText.length === 0 ? 'disabled' : ''"
+            :class="
+              tweetText.length === 0 && tweetImage.data === '' ? 'disabled' : ''
+            "
             v-on:click="submitTweet"
             type="button"
           >
@@ -67,6 +87,10 @@ export default {
     return {
       avatar: composerAvatar,
       tweetText: '',
+      tweetImage: {
+        data: '',
+        altText: '',
+      },
     };
   },
   methods: {
@@ -76,10 +100,31 @@ export default {
         created_at: new Date(now).toISOString(),
         id: now.toString(),
         text: this.tweetText,
+        image: { ...this.tweetImage },
       };
 
       this.saveTweet(tweet);
       this.tweetText = '';
+      this.tweetImage.data = '';
+      this.tweetImage.altText = '';
+    },
+    attachImageBtnClick() {
+      const imgInput = document.getElementById('image-attachment');
+      imgInput.click();
+    },
+    previewImage(e) {
+      const file = e.target.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.tweetImage.data = reader.result;
+        this.tweetImage.altText = file.name;
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImageAttachment() {
+      this.tweetImage.data = '';
+      this.tweetImage.altText = '';
     },
   },
 };
@@ -118,6 +163,37 @@ export default {
       }
     }
 
+    .attached-image {
+      display: inline-block;
+      position: relative;
+
+      .tweetImage {
+        width: 100px;
+        height: 100px;
+        border: 2px solid #aaa;
+        border-radius: 8px;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+        object-fit: cover;
+        object-position: center;
+      }
+      .btn-remove-img {
+        cursor: pointer;
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 0;
+        background: red;
+        color: #fff;
+
+        &:hover {
+          opacity: 0.5;
+        }
+      }
+    }
+
     #actions {
       /* class="d-flex align-items-center mt-2" */
       display: flex;
@@ -127,6 +203,10 @@ export default {
 
       @media screen and (max-width: 992px) {
         align-items: flex-end;
+      }
+
+      input#image-attachment {
+        display: none;
       }
 
       button {
