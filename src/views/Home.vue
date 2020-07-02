@@ -55,7 +55,9 @@ export default {
   },
 
   updated() {
-    // Remove recently updated status to allow succeeding updates to have the updated animation indicators as well
+    // Remove recently updated status
+    // to allow succeeding updates
+    // to have the updated animation indicators as well
     if (this.recentlyUpdatedId) {
       setTimeout(() => {
         this.tweets = this.tweets.map((t) => {
