@@ -36,7 +36,7 @@
             v-on:click="attachImageBtnClick"
           />
         </button>
-        <button>
+        <!-- <button>
           <img
             src="../assets/img/ic-gif.svg"
             alt="Add animated GIF"
@@ -56,7 +56,7 @@
             alt="Schedule tweet"
             class="ic-compose-tweet-advanced"
           />
-        </button>
+        </button> -->
         <div class="left">
           <span class="character-count">{{ tweetText.length }}/280</span>
           <button
