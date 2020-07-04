@@ -33,6 +33,12 @@
       </div>
       <div :class="tweet.recentlyUpdated ? 'tweet-body updated' : 'tweet-body'">
         <span>{{ tweet.text }}</span>
+        <span
+          class="tweet-image"
+          v-if="tweet.image !== undefined && tweet.image.data !== ''"
+        >
+          <img :src="tweet.image.data" :alt="tweet.image.altText" />
+        </span>
       </div>
       <div class="tweet-actions">
         <span class="action">
@@ -211,6 +217,21 @@ export default {
         animation-duration: 3s;
         animation-timing-function: ease-in-out;
         animation-iteration-count: 1;
+      }
+
+      .tweet-image {
+        display: inline-block;
+        margin-top: 12px;
+        margin-bottom: 12px;
+
+        img {
+          width: 100%;
+          max-height: 400px;
+          border-radius: 8px;
+          border: 1px solid #aaa;
+          object-fit: cover;
+          object-position: center;
+        }
       }
     }
 
